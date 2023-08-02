@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Login - Jobs Management Software</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #1e3c72; /* Blue background */
+      color: #ffffff; /* White text color */
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      max-width: 350px;
+      padding: 40px;
+      border-radius: 10px;
+      text-align: center;
+      background-color: #ffffff; /* White login form background */
+      box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      color: #1e3c72; /* Blue heading text color */
+      margin-bottom: 30px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 24px;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      color: #333;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .login-container input[type="text"]::placeholder,
+    .login-container input[type="password"]::placeholder {
+      color: #ccc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .login-container input[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background-color: #1e3c72; /* Blue submit button background */
+      color: #ffffff; /* White text color */
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .login-container input[type="submit"]:hover {
+      background-color: #3f70bb; /* Lighter shade of blue on hover */
+    }
+
+    footer {
+      color: #1e3c72; /* Blue footer text color */
+      margin-top: 20px;
+      text-align: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+<img class="logo" src="title.png" alt="Logo">
+    <h2>Login to Jobs Management Software</h2>
+    <form id="loginForm">
+      <input type="text" name="username" placeholder="Username" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <input type="submit" value="Login">
+    </form>
+    <footer>
+      Software made by Naukri Madat Kendra Teams.
+    </footer>
+  </div>
+  <script>
+    // Disable all function keys and shortcut keys
+    document.addEventListener('keydown', function(event) {
+      if (
+        event.ctrlKey ||
+        event.altKey ||
+        event.metaKey ||
+        event.key === 'F12' || // F12 for Developer Tools
+        event.key === 'F5' ||  // F5 for refresh
+        event.key === 'F11'     // F11 for full screen
+      ) {
+        event.preventDefault();
+      }
+    });
+
+    // Disable right-click and text selection
+    document.addEventListener('contextmenu', function(event) {
+      event.preventDefault();
+    });
+
+    document.addEventListener('selectstart', function(event) {
+      event.preventDefault();
+    });
+
+    // Client-side password hashing function (not as secure as server-side hashing)
+    function hashPassword(password) {
+      // Simple hash function for demonstration purposes
+      let hash = 0;
+      for (let i = 0; i < password.length; i++) {
+        const char = password.charCodeAt(i);
+        hash = (hash << 5) - hash + char;
+        hash = hash & hash; // Convert to 32bit integer
+      }
+      return String(hash);
+    }
+
+    // Allow only alphabets (a-z), numbers (0-9), backspace, and enter in the username field
+    document.getElementsByName('username')[0].addEventListener('keydown', function(event) {
+      const key = event.key;
+      if (
+        (key >= 'a' && key <= 'z') || // Lowercase alphabets
+        (key >= '0' && key <= '9') || // Numbers
+        key === '@' || // '@' symbol
+        key === 'Backspace' || // Backspace key
+        key === 'Enter' // Enter key
+      ) {
+        return true; // Allow the character
+      } else {
+        event.preventDefault();
+      }
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Get the username and password entered by the user
+      const username = document.getElementsByName('username')[0].value;
+      const password = document.getElementsByName('password')[0].value;
+
+      // Replace these hardcoded values with the actual valid credentials from your server-side database
+      const validUsername = 'aai';
+      const validPassword = 'aai@2525';
+
+      // Hash the entered password to compare with the stored hashed password
+      const enteredPasswordHash = hashPassword(password); // Use the same hashing algorithm
+
+      // Check if the entered username and password match the valid credentials
+      if (username === validUsername && enteredPasswordHash === hashPassword(validPassword)) {
+        alert('Login successful! Redirecting to the dashboard...');
+        // Replace 'your_dashboard_page.html' with the URL of the dashboard page
+        window.location.href = 'form.html';
+      } else {
+        alert('Invalid username or password. Please try again.');
+      }
+    });
+  </script>
+   <style>
+    /* Existing styles here */
+
+    /* New style for the logo */
+    .logo {
+      display: block;
+      margin: 0 auto;
+      max-width: 300px;
+      height: auto;
+    }
+  </style>
+
+</body>
+
+</html>

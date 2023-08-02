@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Latest Job Notifications</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  
+    <style>
+    /* Reset default margin and padding for body */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* CSS style for the container */
+    .container {
+      padding: 20px;
+    }
+
+    /* CSS style for the title */
+    h2 {
+      color: #e74c3c;
+      font-size: 40px;
+      text-align: center;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #e74c3c;
+      padding-bottom: 10px;
+    }
+
+    /* CSS style for the logo */
+    .logo {
+      max-width: 300px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* CSS style for the search form */
+    .search-form {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+
+    /* CSS style for the search input */
+    #searchInput {
+      width: 300px;
+      padding: 12px;
+      font-size: 18px;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+    }
+
+    /* CSS style for the search button */
+    #searchButton {
+      background-color: #e74c3c;
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+    }
+
+    /* CSS style for the table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    /* CSS style for the header cells */
+    th {
+      background-color: #e74c3c;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px;
+    }
+
+    /* CSS style for alternating data rows */
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    /* CSS style for the data cells */
+    td {
+      text-align: center;
+      padding: 15px;
+      border: 1px solid #ccc;
+    }
+
+    /* CSS style for links */
+    a {
+      text-decoration: none;
+      color: #3498db;
+      font-weight: bold;
+    }
+
+    /* CSS style for links on hover */
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* CSS style for the success notification */
+    .success-notification {
+      display: none;
+      padding: 10px;
+      background-color: #3498db;
+      color: #fff;
+      text-align: center;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* CSS style for the footer */
+    footer {
+      text-align: center;
+      padding: 10px;
+      background-color: #e74c3c;
+      color: #fff;
+      font-size: 14px;
+      border-radius: 5px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <img class="logo" src="title.png" alt="Logo">
+    <h2>Latest Job Notifications</h2>
+    <div class="search-form">
+      <input type="text" id="searchInput" placeholder="Search...">
+      <button id="searchButton">Search</button>
+    </div>
+    <table id="dataTable">
+      <tr>
+        <th style="width: 30%;">Title</th>
+        <th>Apply Link</th>
+        <th>Poster Download</th>
+        <th>Notification Link</th>
+        <th>Last Date</th>
+      </tr>
+      <!-- Table data rows will be dynamically generated using JavaScript -->
+    </table>
+  </div>
+
+  <footer>
+    Software made by Naukri Madat Kendra Teams.
+  </footer>
+ <script>
+        // Disable right-click on the entire page
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+        });
+
+        // Disable text selection on the entire page
+        document.addEventListener('selectstart', function(event) {
+            event.preventDefault();
+        });
+
+        // Disable copying on the entire page
+        document.addEventListener('copy', function(event) {
+            event.preventDefault();
+        });
+    </script>
+ <script>
+        document.addEventListener('keydown', function(event) {
+            // Check if the pressed key is a function key (F1 to F12)
+            if (event.key.startsWith('F') && !isNaN(Number(event.key.slice(1)))) {
+                event.preventDefault();
+            }
+
+            // Check for shortcut keys and disable them
+            if ((event.ctrlKey || event.metaKey) && (
+                event.key === 'c' ||       // Ctrl+C
+                event.key === 'v' ||       // Ctrl+V
+                event.key === 'x' ||       // Ctrl+X
+                event.key === 'u' ||       // Ctrl+U
+                (event.shiftKey && event.key === 'i') // Ctrl+Shift+I
+            )) {
+                event.preventDefault();
+            }
+        });
+    </script>
+  <script>
+    // Retrieve all the submitted form data from Local Storage and display in the table
+    const formDataArrayString = localStorage.getItem("submittedFormDataArray");
+    if (formDataArrayString) {
+      const formDataArray = JSON.parse(formDataArrayString);
+      const dataTable = document.getElementById("dataTable");
+
+      // Reverse the array to show latest posts at the top
+      formDataArray.reverse();
+
+      formDataArray.forEach((formData) => {
+        const newRow = document.createElement("tr");
+        newRow.innerHTML = `
+          <td>${formData.title}</td>
+          <td><a href="${formData.applyLink}" target="_blank">Apply Link</a></td>
+          <td><a href="${formData.posterDownloadLink}" target="_blank">Download Poster</a></td>
+          <td><a href="${formData.notificationLink}" target="_blank">Notification Link</a></td>
+          <td>${formData.lastDate}</td>
+        `;
+        dataTable.appendChild(newRow);
+      });
+
+      // Search functionality
+      const searchInput = document.getElementById("searchInput");
+      searchInput.addEventListener("input", () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        const rows = dataTable.getElementsByTagName("tr");
+
+        for (let i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+          const row = rows[i];
+          const rowData = row.textContent.toLowerCase();
+
+          if (rowData.includes(searchTerm)) {
+            row.style.display = ""; // Show the row if it matches the search term
+          } else {
+            row.style.display = "none"; // Hide the row if it doesn't match the search term
+          }
+        }
+      });
+    } else {
+      // If no form data is found in Local Storage, show a message
+      const noDataMessage = document.createElement("p");
+      noDataMessage.textContent = "No data submitted yet.";
+      document.body.appendChild(noDataMessage);
+    }
+  </script>
+</body>
+
+</html>
